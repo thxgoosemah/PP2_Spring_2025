@@ -2,8 +2,7 @@ def squares(a, b):
     for i in range(a, b+1):
         yield i ** 2
 
-# Example usage:
-a = int(input("Enter the starting number: "))
-b = int(input("Enter the ending number: "))
+a = int(input("a: "))
+b = int(input("b: "))
 for square in squares(a, b):
     print(square, end=" ")
