@@ -1,10 +1,16 @@
 import re
 
-def match_a_followed_by_b(text):
-    pattern = r'a*b*'
-    return re.fullmatch(pattern, text) is not None
+# Читаем содержимое файла
+with open('row.txt', 'r', encoding='utf-8') as file:
+    text = file.read()
 
-# Тестовые примеры
-examples = ["a", "ab", "abb", "abbb", "ba", "b", "abc"]
-for e in examples:
-    print(f"{e}: {match_a_followed_by_b(e)}")
+# Ищем последовательности строчных букв, соединённых подчёркиванием
+matches = re.findall(r'\b[a-z]+_[a-z]+\b', text)
+
+# Выводим найденные последовательности
+print("Найдено:", matches)
+
+# Записываем результат в output.txt
+with open('output.txt', 'w', encoding='utf-8') as file:
+    file.write('\n'.join(matches))
+

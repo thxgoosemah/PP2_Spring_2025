@@ -1,9 +1,20 @@
-import re
+import re  # Импортируем модуль регулярных выражений
 
-def find_uppercase_followed_by_lowercase(text):
-    pattern = r'\b[A-Z][a-z]+\b'
-    return re.findall(pattern, text)
+# Открываем файл 'row.txt' на чтение и читаем весь текст
+with open('row.txt', 'r', encoding='utf-8') as f:
+    text = f.read()
 
-# Тестовые примеры
-example_text = "Hello World Python Programming hello HELLO hELLo PyThoN"
-print(find_uppercase_followed_by_lowercase(example_text))
+# Используем регулярное выражение для поиска слов:
+# \b — граница слова
+# [A-Z] — одна заглавная буква
+# [a-z]+ — одна или более строчных букв сразу после заглавной
+# \b — конец слова
+matches = re.findall(r'\b[A-Z][a-z]+\b', text)
+
+# Выводим список найденных слов в консоль
+print("Найдено:", matches)
+
+# Открываем (или создаем) файл 'output.txt' для записи результата
+with open('output.txt', 'w', encoding='utf-8') as f:
+    # Записываем каждое найденное слово в отдельной строке
+    f.write('\n'.join(matches))

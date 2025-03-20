@@ -1,9 +1,14 @@
-import re
+import re  # Импортируем модуль регулярных выражений
 
-def find_lowercase_with_underscore(text):
-    pattern = r'\b[a-z]+_[a-z]+\b'
-    return re.findall(pattern, text)
+# Открываем файл 'row.txt' для чтения, читаем весь текст и удаляем лишние пробелы по краям
+with open('row.txt', 'r', encoding='utf-8') as f:
+    text = f.read().strip()
 
-# Тестовые примеры
-example_text = "hello_world some_text test_value HelloWorld test_123 _start_end_"
-print(find_lowercase_with_underscore(example_text))
+# Ищем все последовательности, где слово начинается с заглавной буквы,
+# за которой может следовать любое количество строчных букв
+result = re.findall(r'[A-Z][a-z]*', text)
+
+# Открываем (или создаём) файл 'output3.txt' для записи результата
+with open('output3.txt', 'w', encoding='utf-8') as f:
+    # Записываем найденные слова в файл, разделяя их пробелом
+    f.write(' '.join(result))
