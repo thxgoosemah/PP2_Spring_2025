@@ -1,15 +1,9 @@
-import re  # Импортируем модуль регулярных выражений
+import re 
 
-# Открываем файл 'row.txt' на чтение и читаем содержимое
 with open('row.txt', 'r', encoding='utf-8') as f:
-    camel_str = f.read().strip()  # Убираем пробелы и переносы в начале и конце текста
+    camel_str = f.read().strip()  
 
-# Используем re.sub для поиска всех заглавных букв и добавления перед ними символа "_"
-# ([A-Z]) — находит каждую заглавную букву и запоминает её в группу
-# r'_\1' — вставляет перед найденной заглавной буквой символ "_" (слово "группа" — это \1)
-snake_str = re.sub(r'([A-Z])', r'_\1', camel_str).lower()  # Приводим всю строку к нижнему регистру
+snake_str = re.sub(r'([A-ZА-ЯЁ])', r'_\1', camel_str).lower()
 
-# Открываем (или создаем) файл 'output.txt' для записи результата
-with open('output.txt', 'w', encoding='utf-8') as f:
-    # Записываем получившийся snake_case текст в файл
+with open('output5.txt', 'w', encoding='utf-8') as f:
     f.write(snake_str)
