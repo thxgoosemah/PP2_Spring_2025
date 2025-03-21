@@ -1,10 +1,10 @@
 import re
-with open('row.txt', 'r', encoding='utf-8') as file:
-    text = file.read()
-    
-matches = re.findall(r'\b[a-z]+_[a-z]+\b', text)
-print(": ", matches)
+with open('row.txt', 'r', encoding='utf-8') as f:
+    b = f.read()
 
-with open('output1.txt', 'w', encoding='utf-8') as file:
-    file.write('\n'.join(matches))
+a = re.findall(r'\b[a-z]+_[a-z]+\b', b)
+print(": ", a)
+
+with open('output1.txt', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(a))
 

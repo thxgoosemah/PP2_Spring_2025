@@ -1,8 +1,8 @@
 import re 
 with open('row.txt', 'r', encoding='utf-8') as f:
-    text = f.read().strip()
+    a = f.read().strip()
     
-result = re.findall(r'\b[А-ЯA-Z][а-яa-z]*\b', text)
+b= re.findall(r'\b[А-ЯA-Z][а-яa-z]*\b', a)
 
 with open('output2.txt', 'w', encoding='utf-8') as f:
-    f.write(' '.join(result))
+    f.write(' '.join(b))
