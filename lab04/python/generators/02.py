@@ -1,8 +1,9 @@
-def divisible_4_and_3(n):
-    for i in range(n+1):
+def divTo4and3(n):
+    a = []
+    for i in range(n + 1):
         if i % 3 == 0 and i % 4 == 0:
-            yield i
-
+            a.append(i)
+    return a
 n = int(input(": "))
-for number in divisible_4_and_3(n):
+for number in divTo4and3(n):
     print(number, end=" ")

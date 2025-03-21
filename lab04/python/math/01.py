@@ -1,4 +1,4 @@
 import math
-d = float(input("Input degree: "))
+d = float(input(": "))
 r = math.radians(d)
-print(f"Output radian: {r:.6f}")
+print(f"R: {r:.6f}")

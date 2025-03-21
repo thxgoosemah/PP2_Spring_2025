@@ -1,8 +1,9 @@
 def squares(a, b):
-    for i in range(a, b+1):
-        yield i ** 2
-
+    a = []
+    for i in range(a, b + 1):
+        a.append(i * i)
+    return a
 a = int(input("a: "))
 b = int(input("b: "))
-for square in squares(a, b):
-    print(square, end=" ")
+for i in squares(a, b):
+    print(i, end=" ")

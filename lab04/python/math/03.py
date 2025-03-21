@@ -1,4 +1,4 @@
-base = float(input("Length of base: "))
-height = float(input("Height of parallelogram: "))
-area = base * height
-print(f"Expected Output: {area}")
+a = float(input("a: "))
+h = float(input("h: "))
+area = a * h
+print(f": {area}")

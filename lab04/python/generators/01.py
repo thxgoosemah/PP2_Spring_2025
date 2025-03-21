@@ -1,7 +1,8 @@
-def squares_to_n(n):
-    for i in range(n+1):
-        yield i ** 2
-
+def squaresToN(n):
+    a = []
+    for i in range(n + 1):
+        a.append(i * i)
+    return a
 n = int(input(": "))
-for square in squares_to_n(n):
+for square in squaresToN(n):
     print(square, end=" ")
