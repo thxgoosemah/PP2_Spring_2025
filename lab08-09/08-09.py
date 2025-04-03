@@ -1,5 +1,4 @@
 import pygame
-import copy
 
 pygame.init()
 
@@ -28,6 +27,7 @@ radius = 5
 drawing = False
 start_pos = None
 last_pos = None
+
 canvas = pygame.Surface((WIDTH, HEIGHT))
 canvas.fill(WHITE)
 preview = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
@@ -59,7 +59,7 @@ def redo():
         canvas.blit(redo_stack.pop(), (0, 0))
 
 # Основной цикл программы
-running = True
+running = True  
 while running:
     screen.fill(WHITE)
     screen.blit(canvas, (0, 50))
@@ -69,8 +69,8 @@ while running:
     # Панель инструментов
     pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, 50))
     font = pygame.font.Font(None, 26)
-    labels = ["Brush (B)", "Eraser (E)", "Rect (R)", "Circle (C)", "Square (Q)", "Triangle (T)", 
-              "Eq Triangle (H)", "Rhombe (D)", "Clear (X)", "Undo (Ctrl+Z)", "Redo (Ctrl+Y)", "Color (1-7)"]
+    labels = ["Brush (B)", "Eraser (E)", "Rect (R)", "Circle (C)", "Square (Q)", "Triangle (T) ", 
+              "Eq Triangle (H)"," ", "Rhombe (D)", "Clear (X)", "Undo (Ctrl+Z)", "Redo (Ctrl+Y)", "Color (1-7)"]
     for i, label in enumerate(labels):
         text = font.render(label, True, BLACK)
         screen.blit(text, (10 + i * 110, 10))
