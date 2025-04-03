@@ -6,7 +6,6 @@ pygame.init()
 # Настройки экрана
 WIDTH, HEIGHT = 1400, 1020
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Advanced Paint App")
 clock = pygame.time.Clock()
 
 # Цвета
