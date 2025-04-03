@@ -2,12 +2,11 @@ import pygame
 
 pygame.init()
 
-# Настройки экрана
-WIDTH, HEIGHT = 1400, 1020
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-clock = pygame.time.Clock()
 
-# Цвета
+WIDTH, HEIGHT = 1400, 1020 # Создаёт разрешение для окна 
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock() # Управляет частотой кадров в окне. Если ее не будет то игра будет слишком плавной и не будет ограничений из за этого может привести к лагам
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -16,67 +15,60 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PURPLE = (128, 0, 128)
 ORANGE = (255, 165, 0)
-COLORS = [BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE]
+COLORS = [BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE] # Список цветов
 color_index = 0
-color = COLORS[color_index]
+color = COLORS[color_index] # Обращение к каждому цвету через индекс
 
-# Инструменты
-tools = ["brush", "eraser", "rectangle", "circle", "square", "triangle", "eq_triangle", "rhombe"]
-tool = "brush"
-radius = 5
-drawing = False
+tools = ["brush", "eraser", "rectangle", "circle", "square", "triangle", "eq_triangle", "rhombe"] # Список инструментов
+tool = "brush" # Инструмент по умолчанию
+radius = 5 # размер кисти
+drawing = False # Проверка что на экране вообще что то рисуется
 start_pos = None
 last_pos = None
 
-canvas = pygame.Surface((WIDTH, HEIGHT))
-canvas.fill(WHITE)
-preview = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+canvas = pygame.Surface((WIDTH, HEIGHT)) # Основной холст для рисования, оно имеет размер всего экрана
+canvas.fill(WHITE) # Белым цветом
+preview = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA) # Будет нужна в будущем чтобы при рисовании фигуры было видно предварительный слой для фигур
 
-# История рисования для undo/redo
 undo_stack = []
 redo_stack = []
+# Для хранения истории изменений
 
-# Функция очистки холста
 def clear_canvas():
-    canvas.fill(WHITE)
-    undo_stack.clear()  # Очищаем историю при очистке холста
-    redo_stack.clear()
+    canvas.fill(WHITE) # закрашивает экран белым
+    undo_stack.clear()  # очищает стек отмены через clear()
+    redo_stack.clear() # Очищает стек повтора
 
-# Функция для сохранения состояния холста
 def save_state():
-    undo_stack.append(canvas.copy())
+    undo_stack.append(canvas.copy()) # Добавляет копию холста в стек отмены
 
-# Функция для отмены действия
 def undo():
-    if undo_stack:
-        redo_stack.append(canvas.copy())
-        canvas.blit(undo_stack.pop(), (0, 0))
+    if undo_stack: # Проверка, что есть ли что то на холсте 
+        redo_stack.append(canvas.copy()) # Сохраняет текущее положение в redo_stack
+        canvas.blit(undo_stack.pop(), (0, 0)) # Восстанавливает прошлый кадр
 
-# Функция для повтора действия
 def redo():
-    if redo_stack:
-        undo_stack.append(canvas.copy())
-        canvas.blit(redo_stack.pop(), (0, 0))
+    if redo_stack: # Проверяет, на то что можно ли что то восстановить
+        undo_stack.append(canvas.copy()) # Аналогично но с undo_stack
+        canvas.blit(redo_stack.pop(), (0, 0)) # Восстанавливает действие 
 
-# Основной цикл программы
 running = True  
 while running:
-    screen.fill(WHITE)
-    screen.blit(canvas, (0, 50))
-    screen.blit(preview, (0, 50))
-    preview.fill((0, 0, 0, 0))
-    
-    # Панель инструментов
-    pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, 50))
-    font = pygame.font.Font(None, 26)
+    screen.fill(WHITE) # Заливает экран белым цветом
+    screen.blit(canvas, (0, 50)) # размещяет холст чуть ниже из за панели для инструментов
+    screen.blit(preview, (0, 50)) # Аналогично
+    preview.fill((0, 0, 0, 0)) # очищает слой preview делая его полностью прозрачным после нанесения фигуры
+
+    pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, 50)) # Рисует серый прямоугольник сверху экрана
+    font = pygame.font.Font(None, 26) # Размер шрифта 26, там стоит None потому что там будет использован дефолтный шрифт
     labels = ["Brush (B)", "Eraser (E)", "Rect (R)", "Circle (C)", "Square (Q)", "Triangle (T) ", 
-              "Eq Triangle (H)"," ", "Rhombe (D)", "Clear (X)", "Undo (Ctrl+Z)", "Redo (Ctrl+Y)", "Color (1-7)"]
+              "Eq Triangle (H)"," ", "Rhombe (D)", "Clear (X)", "Undo (Ctrl+Z)", "Redo (Ctrl+Y)", "Color (1-7)"] # Список инструментов и с его горячими клавишами
     for i, label in enumerate(labels):
-        text = font.render(label, True, BLACK)
-        screen.blit(text, (10 + i * 110, 10))
+        text = font.render(label, True, BLACK) # Делает текст инструмента и цвет Черный.
+        screen.blit(text, (10 + i * 110, 10)) # Рисует текст на экране, следуя этому правилу screen.blit(text, (x, y)), берем текст и сдвигаем на позицию по х и у
     
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-    adjusted_pos = (mouse_x, mouse_y - 50)  # Убираем смещение на панель инструментов
+    mouse_x, mouse_y = pygame.mouse.get_pos() # возвращает координаты х и у
+    adjusted_pos = (mouse_x, mouse_y - 50)  # рисование происходит ниже панели, поэтому мы корректируем координаты чтобы мышь работала с холстом а не с панелью
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -122,16 +114,16 @@ while running:
                 color_index = 6
                 color = COLORS[color_index]
             elif event.key == pygame.K_z and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                undo()  # Ctrl+Z
+                undo()  # Выполняет функцию возврата прошлого кадра
             elif event.key == pygame.K_y and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                redo()  # Ctrl+Y
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            drawing = True
+                redo()  # Восстанавливает действие 
+        elif event.type == pygame.MOUSEBUTTONDOWN: # Событие срабатывает когда пользователь нажимает на левую кнопку выше
+            drawing = True # Флаг который указывает что пользователь начал рисовать. Он используется для управления состоянием рисования, чтобы можно было отслеживать, рисуется ли что-то в данный момент.
             start_pos = adjusted_pos
             last_pos = adjusted_pos
-            save_state()  # Сохраняем состояние перед рисованием
+            save_state()  
         elif event.type == pygame.MOUSEBUTTONUP:
-            if start_pos != adjusted_pos:  # Проверяем, чтобы фигура не рисовалась в одной точке
+            if start_pos != adjusted_pos: 
                 end_pos = adjusted_pos
                 width = end_pos[0] - start_pos[0]
                 height = end_pos[1] - start_pos[1]
