@@ -11,7 +11,6 @@ second_hand = pygame.image.load("sec_hand.png")
 
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-# Центр экрана
 center = (WIDTH // 2, HEIGHT // 2)
 
 running = True
@@ -21,7 +20,7 @@ while running:
             running = False
     
     now = datetime.datetime.now()
-    min_angle = -now.minute * 6  
+    min_angle = -now.minute * 6     
     sec_angle = -now.second * 6   
     
     rotated_min = pygame.transform.rotate(minute_hand, min_angle)
