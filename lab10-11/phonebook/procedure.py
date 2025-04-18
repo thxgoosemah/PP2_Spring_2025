@@ -15,8 +15,8 @@ def add_or_update_manual():
     name = input("name: ")  # спрашиваем имя
     phone = input("phone: ")  # спрашиваем номер телефона
     cur.execute("CALL insert_or_update_user(%s, %s)", (name, phone))  # вызываем процедуру добавления или обновления
-    conn.commit()  # сохраняем изменения в базе
-    print("User added or updated.")  # говорим пользователю, что все ок
+    conn.commit() 
+    print("user added or updated.")  # говорим пользователю, что все ок
 
 # функция для добавления сразу нескольких пользователей
 def add_many():
@@ -28,11 +28,11 @@ def add_many():
         phones.append(input("phone: "))  # добавляем номер телефона
     cur.execute("CALL insert_many_users(%s, %s)", (names, phones))  # вызываем процедуру для массового добавления
     incorrect = cur.fetchone()[0]  # получаем неверные данные, если они есть
-    conn.commit()  # сохраняем изменения
-    if incorrect:  # если есть неправильные данные
-        print("incorrect data:", incorrect)  # выводим их
-    else:  # если все правильно
-        print("added.")  # говорим, что все добавлено
+    conn.commit()  
+    if incorrect:  
+        print("incorrect data:", incorrect)
+    else: 
+        print("added.")  
 
 # функция для поиска по шаблону
 def search_pattern():
@@ -57,36 +57,35 @@ def delete_user_func():
     data = input("enter name or phone to delete: ")  # спрашиваем, что удаляем: имя или телефон
     cur.execute("CALL delete_user(%s)", (data,))  # вызываем процедуру удаления
     conn.commit()  # сохраняем изменения в базе
-    print("deleted")  # говорим, что удалено
+    print("deleted")  
 
-# основное меню программы
 def menu():
-    while True:  # бесконечный цикл для меню
-        print("1 add or update user")  # пункт для добавления или обновления
-        print("2 add many users")  # пункт для добавления нескольких пользователей
-        print("3 find by pattern")  # пункт для поиска по шаблону
-        print("4 show paginated users")  # пункт для отображения пользователей с пагинацией
-        print("5 delete user")  # пункт для удаления пользователя
-        print("0 exit")  # пункт для выхода
+    while True: 
+        print("1 add or update user") 
+        print("2 add many users")  
+        print("3 find by pattern")  
+        print("4 show paginated users")  
+        print("5 delete user") 
+        print("0 exit")  
 
-        cmd = input(": ")  # спрашиваем, какую команду выполняем
+        cmd = input(": ")  
 
-        if cmd == "1":  # если выбрана команда для добавления/обновления пользователя
-            add_or_update_manual()  # вызываем функцию для добавления или обновления
-        elif cmd == "2":  # если выбрана команда для добавления нескольких пользователей
-            add_many()  # вызываем функцию для массового добавления
-        elif cmd == "3":  # если выбрана команда для поиска по шаблону
-            search_pattern()  # вызываем функцию поиска
-        elif cmd == "4":  # если выбрана команда для вывода с пагинацией
-            show_paginated()  # вызываем функцию для пагинации
-        elif cmd == "5":  # если выбрана команда для удаления
-            delete_user_func()  # вызываем функцию для удаления пользователя
-        elif cmd == "0":  # если выбрана команда для выхода
-            break  # выходим из цикла
-        else:  # если введена неправильная команда
-            print("error")  # сообщаем, что команда неверная
+        if cmd == "1": 
+            add_or_update_manual()  
+        elif cmd == "2":  
+            add_many() 
+        elif cmd == "3": 
+            search_pattern()  
+        elif cmd == "4":  
+            show_paginated() 
+        elif cmd == "5":  
+            delete_user_func()  
+        elif cmd == "0":  
+            break  
+        else: 
+            print("error")  
 
-    cur.close()  # закрываем курсор
-    conn.close()  # закрываем соединение с базой
+    cur.close()  
+    conn.close()  
 
 menu()  # запускаем меню
