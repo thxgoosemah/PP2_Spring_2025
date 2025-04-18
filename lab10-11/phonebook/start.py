@@ -9,7 +9,7 @@ conn = psycopg2.connect(
     host="localhost",
     port="5432"
 )
-cur = conn.cursor()
+cur = conn.cursor() # создаём "курсор" — через него выполняются SQL-запросы
 
 # создание самой таблицы если нету
 cur.execute("""
@@ -19,13 +19,13 @@ cur.execute("""
         phone VARCHAR(20)
     )
 """)
-conn.commit()
+conn.commit() # сохраняем изменения в базе
 
 # добавить файлы вручную
 def add_manual():
     name = input("name: ")
     phone = input("phone: ")
-    cur.execute("INSERT INTO phonebook (name, phone) VALUES (%s, %s)", (name, phone))
+    cur.execute("INSERT INTO phonebook (name, phone) VALUES (%s, %s)", (name, phone)) # добавляем в таблицу с именами и номерами
     conn.commit()
     print("+")
 
@@ -35,15 +35,15 @@ def add_from_file():
     with open(filename, newline='') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            cur.execute("INSERT INTO phonebook (name, phone) VALUES (%s, %s)", (row['name'], row['phone']))
+            cur.execute("INSERT INTO phonebook (name, phone) VALUES (%s, %s)", (row['name'], row['phone'])) # ищет из csv файла строку с name и row и заполняет таблицу
     conn.commit()
     print("loaded")
 
 # обновление номера
 def update():
-    name = input("what number update: ")
+    name = input("whose number need to update: ")
     new_phone = input("new number: ")
-    cur.execute("UPDATE phonebook SET phone = %s WHERE name = %s", (new_phone, name))
+    cur.execute("UPDATE phonebook SET phone = %s WHERE name = %s", (new_phone, name)) # Обнаваляет данные из номера для определнного имени 
     conn.commit()
     print("updated")
 
@@ -51,9 +51,9 @@ def update():
 def find():
     data = input("name or number: ")
     cur.execute("SELECT * FROM phonebook WHERE name ILIKE %s OR phone ILIKE %s", (f"%{data}%", f"%{data}%"))
-    results = cur.fetchall()
+    results = cur.fetchall() # получаем все найденные строки
     for row in results:
-        print(row[1], "-", row[2])
+        print(row[1], row[2])
     if not results:
         print("nothing found")
 
@@ -67,12 +67,12 @@ def delete():
 # меню выбора действий
 def menu():
     while True:
-        print("1 - add")
-        print("2 - load from csv file")
-        print("3 - update number")
-        print("4 - find contact")
-        print("5 - delete contact")
-        print("0 - exit")
+        print("1 add")
+        print("2 load from csv file")
+        print("3 update number")
+        print("4 find contact")
+        print("5 delete contact")
+        print("0 exit")
 
         cmd = input(": ")
 
@@ -93,6 +93,5 @@ def menu():
 
     cur.close()
     conn.close()
-    print("Пока!")
 
 menu()
